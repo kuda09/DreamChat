@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Firebase</title>
+  <script src="lib/firebase.js"></script>
+  <script type="text/javascript">
+
+    var ref = new Firebase("https://dreamchatt.firebaseio.com");
+
+    var clearList = function () {
+
+
+      document.querySelector("#nameList").innerHTML = "";
+
+    }
+
+    var setName = function (name) {
+
+      var newName = document.createElement("li");
+      newName.innerHTML = "Name: " + name + " </br>";
+      document.querySelector("#nameList").appendChild(newName);
+    }
+
+    var addNewName = function () {
+
+      var name = prompt("Enter name");
+
+      if (name) {
+
+        ref.push({
+          'name': name
+        })
+      }
+
+    }
+
+    ref.on("value", function (data) {
+
+      var names = data.val();
+
+      clearList();
+
+      for (var name in names) {
+        setName(names[name].name);
+      }
+
+    })
+
+  </script>
+
+
+</head>
+<body>
+  <ion-view view-title="Dashboard">
+    <ion-content class="padding">
+      <h2>Firebase Test</h2>
+
+      <input type="button" value="Add new name" onclick="addNewName()">
+
+      <br>
+      <ul id="namesList">
+
+      </ul>
+
+
+
+    </ion-content>
+  </ion-view>
+
+</body>
+</html>
